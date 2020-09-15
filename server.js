@@ -35,7 +35,8 @@ server.post('/posts', async (req, res) => {
     let create = await myPost.create(sql, id_category, title, content, img_url);
     if (create.length > 0) {
         let post = await myPost.get(sql, create[0]);
-        res.status(201).json({ post });
+        post = post[0];
+        res.status(201).json(post);
     } else {
         res.status(400).json({ error: 'Bad Request, invalid or missing input' });
     }
@@ -48,7 +49,7 @@ server.patch('/posts/:id', myPost.postNotFound(sql), myPost.postDeleted(sql), as
         await myPost.update(sql, req.params.id, id_category, title, content, img_url);
         let postUpdated = await myPost.get(sql, req.params.id);
         postUpdated = postUpdated[0];
-        res.status(200).json({ postUpdated });
+        res.status(200).json(postUpdated);
     } catch {
         res.status(400).json({ error: 'Bad Request, invalid or missing input' })
     };
