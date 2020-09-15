@@ -87,8 +87,8 @@ class Posts {
             if (req.params.id) {
                 self.get(sql, req.params.id)
                     .then(resp => {
-                        if (resp.enable == true) {
-                            next()
+                        if (resp[0].enable == true) {
+                            next();
                         } else {
                             res.status(409)
                                 .json({ error: `Conflict, post deleted` })
