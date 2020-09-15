@@ -58,7 +58,7 @@ server.patch('/posts/:id', myPost.postNotFound(sql), myPost.postDeleted(sql), as
 server.delete('/posts/:id', myPost.postNotFound(sql), myPost.postDeleted(sql), async (req, res) => {
     try {
         await myPost.delete(sql, req.params.id);
-        res.status(200).json({ message: 'Success, product disabled' });
+        res.status(200).json({ message: 'Success, post disabled' });
     }
     catch{
         res.status(400).json({ error: 'Bad Request, invalid or missing input' })
