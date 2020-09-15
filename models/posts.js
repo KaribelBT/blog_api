@@ -1,7 +1,9 @@
 class Posts {
     list(sql) {
         let resp = sql.query(
-            `SELECT * FROM posts 
+            `SELECT  p.id id_post, p.id_category id_category, c.name category_name, p.title, p.img_url, p.create_date
+            FROM posts p
+            JOIN categories c ON p.id_category = c.id
             WHERE enable = :enable
             ORDER BY create_date DESC`, {
             replacements: {

@@ -19,16 +19,7 @@ server.listen(port, () => {
 //lista todos los posts que no hayan sido borrados
 server.get('/posts', async (req, res) => {
     let postsList = await myPost.list(sql);
-    let postsFiltered = postsList.map(resp => {
-        return {
-            id: resp.id,
-            title: resp.title,
-            img_url: resp.img_url,
-            id_category: resp.id_category,
-            create_date: resp.create_date
-        }
-    })
-    res.status(200).json(postsFiltered);
+    res.status(200).json(postsList);
 });
 
 //obtiene post por id
