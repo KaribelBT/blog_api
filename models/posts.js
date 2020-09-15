@@ -27,6 +27,35 @@ class Posts {
             });
         return resp
     };
+    update(sql, id, id_category, title, content, img_url) {
+        let resp = sql.query(
+            `UPDATE posts
+            SET id_category = :id_category, title = :title, content = :content, img_url = :img_url
+            WHERE id = :id`, {
+            replacements: {
+                id,
+                id_category,
+                title,
+                content,
+                img_url
+            },
+            type: sql.QueryTypes.UPDATE
+        });
+        return resp
+    };
+    delete(sql, id) {
+        let resp = sql.query(
+            `UPDATE posts
+            SET enable = :enable
+            WHERE id = :id`, {
+            replacements: {
+                id,
+                enable: false
+            },
+            type: sql.QueryTypes.UPDATE
+        });
+        return resp
+    };
     //middlewares
     postNotFound(sql) {
         let self = this
@@ -38,6 +67,22 @@ class Posts {
                 })
         };
     };
+    postDeleted(sql) {
+        let self = this
+        return function (req, res, next) {
+            if (req.params.id) {
+                self.get(sql, req.params.id)
+                    .then(resp => {
+                        if (resp.enable == true) {
+                            next()
+                        } else {
+                            res.status(409)
+                                .json({ error: `Conflict, post deleted` })
+                        }
+                    })
+            }
+        }
+    }
 };
 
-module.exports = { Posts }
+        module.exports = { Posts }

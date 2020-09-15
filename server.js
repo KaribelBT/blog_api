@@ -17,10 +17,11 @@ server.listen(port, () => {
 });
 
 //obtiene post por id
-server.get('/posts/:id', myPost.postNotFound(sql), async (req, res) => {
+server.get('/posts/:id', myPost.postNotFound(sql), myPost.postDeleted(sql), async (req, res) => {
     let post = await myPost.get(sql, req.params.id);
     post = post[0];
     res.status(200).json(post);
+    console.log(post)
 });
 
 //crea un post
@@ -32,5 +33,29 @@ server.post('/posts', async (req, res) => {
         res.status(201).json({ post });
     } else {
         res.status(400).json({ error: 'Bad Request, invalid or missing input' });
+    }
+});
+
+//modifica datos de post por id
+server.patch('/posts/:id', myPost.postNotFound(sql), myPost.postDeleted(sql), async (req, res) => {
+    const { id_category, title, content, img_url } = req.body;
+    try {
+        await myPost.update(sql, req.params.id, id_category, title, content, img_url);
+        let postUpdated = await myPost.get(sql, req.params.id);
+        postUpdated = postUpdated[0];
+        res.status(200).json({ postUpdated });
+    } catch {
+        res.status(400).json({ error: 'Bad Request, invalid or missing input' })
+    };
+});
+
+//borrado logico de post por id
+server.delete('/posts/:id', myPost.postNotFound(sql), myPost.postDeleted(sql), async (req, res) => {
+    try {
+        await myPost.delete(sql, req.params.id);
+        res.status(200).json({ message: 'Success, product disabled' });
+    }
+    catch{
+        res.status(400).json({ error: 'Bad Request, invalid or missing input' })
     }
 });
