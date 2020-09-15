@@ -1,4 +1,16 @@
 class Posts {
+    list(sql) {
+        let resp = sql.query(
+            `SELECT * FROM posts 
+            WHERE enable = :enable
+            ORDER BY create_date DESC`, {
+            replacements: {
+                enable: 1
+            },
+            type: sql.QueryTypes.SELECT,
+        })
+        return resp;
+    };    
     get(sql, id) {
         let resp = sql.query(
             `SELECT p.id id_post, p.id_category id_category, c.name category_name, p.title, p.content, p.img_url, p.create_date, p.enable
@@ -85,4 +97,4 @@ class Posts {
     }
 };
 
-        module.exports = { Posts }
+module.exports = { Posts }

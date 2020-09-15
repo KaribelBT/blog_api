@@ -16,12 +16,26 @@ server.listen(port, () => {
     console.log('Servidor Iniciado');
 });
 
+//lista todos los posts que no hayan sido borrados
+server.get('/posts', async (req, res) => {
+    let postsList = await myPost.list(sql);
+    let postsFiltered = postsList.map(resp => {
+        return {
+            id: resp.id,
+            title: resp.title,
+            img_url: resp.img_url,
+            id_category: resp.id_category,
+            create_date: resp.create_date
+        }
+    })
+    res.status(200).json(postsFiltered);
+});
+
 //obtiene post por id
 server.get('/posts/:id', myPost.postNotFound(sql), myPost.postDeleted(sql), async (req, res) => {
     let post = await myPost.get(sql, req.params.id);
     post = post[0];
     res.status(200).json(post);
-    console.log(post)
 });
 
 //crea un post
