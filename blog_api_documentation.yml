@@ -1,0 +1,215 @@
+openapi: 3.0.1
+info:
+  title: Blog API
+  description: Blog API para challenge semana 1 Alkemy
+  contact:
+    email: karibel.barco@gmail.com
+  version: 1.0.0
+servers:
+  - description: Blog API
+    url: https://localhost:3001
+  - url: https://app.swaggerhub.com/apis/KaribelBT/blog_api_documentation/1.0.0
+tags:
+  - name: Posts
+    description: Operations about posts
+paths:
+  /posts:
+    post:
+      tags:
+        - Posts
+      summary: Creates a new Post
+      operationId: createPost
+      requestBody:
+        description: Required input to create user
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostRequest"
+        required: true
+      responses:
+        201:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponse"
+        400:
+          $ref: "#/components/responses/BadRequest"
+    get:
+      tags:
+        - Posts
+      summary: Gets a list of all posts
+      operationId: listPosts
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostsList"
+  /posts/:id:
+    get:
+      tags:
+        - Posts
+      summary: Get post by id
+      operationId: getPost
+      parameters:
+        - name: id
+          in: path
+          description: Post Id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponse"
+        404:
+          $ref: "#/components/responses/NotFound"
+        409:
+          $ref: "#/components/responses/Conflict"
+        default:
+          $ref: "#/components/responses/Default"
+    patch:
+      tags:
+        - Posts
+      summary: Update post data
+      operationId: updatePost
+      parameters:
+        - name: id
+          in: path
+          description: User Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Post modifiable data
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/PostRequest"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponse"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        404:
+          $ref: "#/components/responses/NotFound"
+        409:
+          $ref: "#/components/responses/Conflict"
+        default:
+          $ref: "#/components/responses/Default"
+    delete:
+      tags:
+        - Posts
+      summary: Disables post
+      operationId: deletePost
+      parameters:
+        - name: id
+          in: path
+          description: Post Id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success, post disabled
+        400:
+          $ref: "#/components/responses/BadRequest"
+        404:
+          $ref: "#/components/responses/NotFound"
+        409:
+          $ref: "#/components/responses/Conflict"
+        default:
+          $ref: "#/components/responses/Default"
+components:
+  schemas:
+    PostRequest:
+      type: object
+      properties:
+        id_category:
+          type: integer
+          format: int64
+          example: 2
+        title:
+          type: string
+          example: Post Title
+        content:
+          type: string
+          example: Post Content up tp 64KB or 65,535 characters
+        img_url:
+          type: string
+          example: https://i.pinimg.com/564x/66/8c/a5/668ca5f0be77a4611bfbf8c70e6e5b81.jpg
+        create_date:
+          type: number
+          example: 2020-09-15T18:34:04.000Z
+    PostResponse:
+      type: object
+      properties:
+        id_post:
+          type: integer
+          format: int64
+          example: 1
+        id_category:
+          type: integer
+          format: int64
+          example: 2
+        category_name:
+          type: string
+          example: beauty
+        title:
+          type: string
+          example: Post Title
+        content:
+          type: string
+          example: Post Content up tp 64KB or 65,535 characters
+        img_url:
+          type: string
+          example: https://i.pinimg.com/564x/66/8c/a5/668ca5f0be77a4611bfbf8c70e6e5b81.jpg
+        create_date:
+          type: number
+          example: 2020-09-15T18:34:04.000Z
+    PostListed:
+      type: object
+      properties:
+        id_post:
+          type: integer
+          format: int64
+          example: 1
+        id_category:
+          type: integer
+          format: int64
+          example: 2
+        category_name:
+          type: string
+          example: beauty
+        title:
+          type: string
+          example: Post Title
+        img_url:
+          type: string
+          example: https://i.pinimg.com/564x/66/8c/a5/668ca5f0be77a4611bfbf8c70e6e5b81.jpg
+        create_date:
+          type: number
+          example: 2020-09-15T18:34:04.000Z
+    PostsList:
+      type: array
+      items:
+        $ref: "#/components/schemas/PostListed"
+  responses:
+    BadRequest:
+      description: Bad Request, invalid or missing input
+    NotFound:
+      description: Not Found
+    Conflict:
+      description: Conflict
+    Default:
+      description: Internal Server Error

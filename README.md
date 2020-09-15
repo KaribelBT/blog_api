@@ -48,3 +48,7 @@ Desde la terminal ubicandose en la carpeta `server`, ejecutar:
 - Si no tiene instalado Postman, por favor dirigirse a [este link](https://www.getpostman.com/collections/c7e8c17f8be9132a735a)
 - Abrir Postman, click en `File`, click en `Import`, click en `Import From Link` y pegar lo siguiente `https://www.getpostman.com/collections/c7e8c17f8be9132a735a` 
 - Hacer las consultas deseadas
+
+## Documentación de la API
+
+Para ver la documentación de la API, puede abrir el archivo `blog_api_documentation.yml` ubicado en el directorio raiz del proyecto o puede ingresar a [este link](https://app.swaggerhub.com/apis/KaribelBT/blog_api_documentation/1.0.0#/Posts/createPost)
