@@ -17,9 +17,9 @@ CREATE TABLE posts (
   content TEXT NOT NULL,
   img_url VARCHAR(255) NOT NULL,
   create_date  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  enable  BOOLEAN NOT NULL,
   KEY  fk_id_category_id  (id_category),
-  CONSTRAINT fk_id_category_id FOREIGN KEY (id_category) REFERENCES categories (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT fk_id_category_id FOREIGN KEY (id_category) REFERENCES categories (id) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
-INSERT  INTO  posts  VALUES (1, 1, 2, 'test app 1', 50.00, 'url.com'), (2, 2, 2, 'test app 2', 9.99, 'url.com');
-
+INSERT  INTO  posts  VALUES (1, 2, 'Post Test 1', 'Content Post Test', 'url.com', '2020-09-15 00:00:00', 1), (2, 1, 'Post Test 2', 'Content Post Test', 'url.com', '2020-09-15 00:00:01',1); 
