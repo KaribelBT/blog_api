@@ -25,9 +25,10 @@ server.get('/posts/:id', myPost.postNotFound(sql), async (req, res) => {
 
 //crea un post
 server.post('/posts', async (req, res) => {
-    let create = await myPost.create(sql, sql, id_category, title, content, img_url);
+    const { id_category, title, content, img_url } = req.body;
+    let create = await myPost.create(sql, id_category, title, content, img_url);
     if (create.length > 0) {
-        let post = await myPost.get(sequelize, create[0]);
+        let post = await myPost.get(sql, create[0]);
         res.status(201).json({ post });
     } else {
         res.status(400).json({ error: 'Bad Request, invalid or missing input' });
