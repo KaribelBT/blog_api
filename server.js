@@ -198,15 +198,32 @@ server.patch('/posts/:id', async (req, res) => {
     }
 });
 
-/*
 //borrado logico de post por id
-server.delete('/posts/:id', myPost.postNotFound(sql), myPost.postDeleted(sql), async (req, res) => {
+server.delete('/posts/:id', async (req, res) => {
     try {
-        await myPost.delete(sql, req.params.id);
-        res.status(200).json({ message: 'Success, post disabled' });
+        let post = await posts.findOne({
+            attributes: ['id', 'title', 'content', 'img_url', 'create_date'],
+            where: {
+                id: req.params.id,
+                enable: true
+            },
+            include: [{
+                model: categories
+            }]
+        });
+        if (!post) {
+            res.status(404).json({ error: 'Not Found' });
+        } else {
+            await posts.update({
+                enable: false
+            },
+                { where: { id: req.params.id } }
+            );
+            res.status(200).json({ message: 'Success, post disabled' });
+        }
     }
     catch{
         res.status(400).json({ error: 'Bad Request, invalid or missing input' })
     }
-}); */
+});
 
