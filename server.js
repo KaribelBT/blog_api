@@ -9,21 +9,8 @@ const FileSystem = require('fs');
 const sequelize = require('./data_base/database.js');
 const posts = require('./data_base/models/posts');
 const categories = require('./data_base/models/categories');
-categories.hasMany(posts, {
-    onDelete: 'NO ACTION',
-    onUpdate: 'NO ACTION'
-}, {
-    foreignKey: {
-        name: 'category_id',
-        allowNull: false
-    }
-});
-posts.belongsTo(categories, {
-    foreignKey: {
-        name: 'category_id',
-        allowNull: false
-    }
-})
+const associations = require('./data_base/models/associations');
+
 
 // create application/json parser
 server.use(bodyParser.json());
