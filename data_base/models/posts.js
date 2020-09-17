@@ -1,38 +1,58 @@
-class Posts {
-    list(sql) {
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../database.js');
+
+class posts extends Model { }
+posts.init({
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        allowNull: false,
+        autoIncrement: true
+    },
+    category_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    title: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    content: {
+        type: DataTypes.TEXT,
+        allowNull: false
+    },
+    img_url: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    create_date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW
+    },
+    enable: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    }
+}, {
+    sequelize,
+    freezeTableName: true,
+    timestamps: false,
+    underscored: true    
+});
+
+module.exports = posts;
+
+/* class Posts {
+    
+    create(sql, category_id, title, content, img_url) {
         let resp = sql.query(
-            `SELECT  p.id id_post, p.id_category id_category, c.name category_name, p.title, p.img_url, p.create_date
-            FROM posts p
-            JOIN categories c ON p.id_category = c.id
-            WHERE enable = :enable
-            ORDER BY create_date DESC`, {
-            replacements: {
-                enable: 1
-            },
-            type: sql.QueryTypes.SELECT,
-        })
-        return resp;
-    };    
-    get(sql, id) {
-        let resp = sql.query(
-            `SELECT p.id id_post, p.id_category id_category, c.name category_name, p.title, p.content, p.img_url, p.create_date, p.enable
-            FROM posts p
-            JOIN categories c ON p.id_category = c.id
-            WHERE p.id = :id`, {
-            replacements: {
-                id
-            },
-            type: sql.QueryTypes.SELECT,
-        });
-        return resp;
-    };
-    create(sql, id_category, title, content, img_url) {
-        let resp = sql.query(
-            `INSERT INTO posts (id_category, title, content, img_url, enable) 
-             VALUES (:id_category, :title, :content, :img_url, :enable)`,
+            `INSERT INTO posts (category_id, title, content, img_url, enable)
+             VALUES (:category_id, :title, :content, :img_url, :enable)`,
             {
                 replacements: {
-                    id_category,
+                    category_id,
                     title,
                     content,
                     img_url,
@@ -41,14 +61,14 @@ class Posts {
             });
         return resp
     };
-    update(sql, id, id_category, title, content, img_url) {
+    update(sql, id, category_id, title, content, img_url) {
         let resp = sql.query(
             `UPDATE posts
-            SET id_category = :id_category, title = :title, content = :content, img_url = :img_url
+            SET category_id = :category_id, title = :title, content = :content, img_url = :img_url
             WHERE id = :id`, {
             replacements: {
                 id,
-                id_category,
+                category_id,
                 title,
                 content,
                 img_url
@@ -99,4 +119,4 @@ class Posts {
     }
 };
 
-module.exports = { Posts }
+module.exports = { Posts } */

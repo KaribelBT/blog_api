@@ -135,7 +135,7 @@ components:
     PostRequest:
       type: object
       properties:
-        id_category:
+        category_id:
           type: integer
           format: int64
           example: 2
@@ -158,7 +158,7 @@ components:
           type: integer
           format: int64
           example: 1
-        id_category:
+        category_id:
           type: integer
           format: int64
           example: 2
@@ -184,7 +184,7 @@ components:
           type: integer
           format: int64
           example: 1
-        id_category:
+        category_id:
           type: integer
           format: int64
           example: 2
