@@ -25,7 +25,6 @@ posts.belongsTo(categories, {
     }
 })
 
-
 // create application/json parser
 server.use(bodyParser.json());
 // parse various different custom JSON types as JSON
@@ -118,30 +117,38 @@ server.get('/posts', async (req, res) => {
     res.json(postsListed);
 });
 
-//obtiene post por id si no hay sido borrado
+//obtiene post por id
 server.get('/posts/:id', async (req, res) => {
-    let post = await posts.findAll({
-        attributes: ['id', 'title', 'content', 'img_url', 'create_date'],
-        where: {
-            id: req.params.id,
-            enable: true
-        },
-        include: [{
-            model: categories
-        }]
-    });
-    post = post[0];
-    res.status(200).json(post);
+    try {
+        let post = await posts.findOne({
+            attributes: ['id', 'title', 'content', 'img_url', 'create_date'],
+            where: {
+                id: req.params.id,
+                enable: true
+            },
+            include: [{
+                model: categories
+            }]
+        });
+        if (post) {
+            res.status(200).json(post);
+        } else {
+            res.status(404).json({ error: 'Not Found' });
+        }
+    } catch (error) {
+        res.status(400).json({ error: 'Bad Request, invalid or missing input' })
+    }
 });
 
 //crea un post
 server.post('/posts', async (req, res) => {
+    const { category_id, title, content, img_url } = req.body;
     try {
         let create = await posts.create({
-            category_id: req.body.category_id,
-            title: req.body.title,
-            content: req.body.content,
-            img_url: req.body.img_url
+            category_id: category_id,
+            title: title,
+            content: content,
+            img_url: img_url
         })
         res.status(201).json(create);
     } catch (error) {
@@ -149,20 +156,49 @@ server.post('/posts', async (req, res) => {
     }
 });
 
-/*
 //modifica datos de post por id
-server.patch('/posts/:id', myPost.postNotFound(sql), myPost.postDeleted(sql), async (req, res) => {
+server.patch('/posts/:id', async (req, res) => {
     const { category_id, title, content, img_url } = req.body;
-    try {
-        await myPost.update(sql, req.params.id, category_id, title, content, img_url);
-        let postUpdated = await myPost.get(sql, req.params.id);
-        postUpdated = postUpdated[0];
-        res.status(200).json(postUpdated);
-    } catch {
-        res.status(400).json({ error: 'Bad Request, invalid or missing input' })
-    };
+    if (!req.body) {
+        let post = await posts.findOne({
+            attributes: ['id', 'title', 'content', 'img_url', 'create_date'],
+            where: {
+                id: req.params.id,
+                enable: true
+            },
+            include: [{
+                model: categories
+            }]
+        });
+        if (!post) {
+            res.status(404).json({ error: 'Not Found' });
+        } else {
+            let postUpdated = await posts.update({
+                category_id: category_id,
+                title: title,
+                content: content,
+                img_url: img_url
+            },
+                { where: { id: req.params.id } }
+            );
+            postUpdated = await posts.findOne({
+                attributes: ['id', 'title', 'content', 'img_url', 'create_date'],
+                where: {
+                    id: req.params.id,
+                    enable: true
+                },
+                include: [{
+                    model: categories
+                }]
+            });
+            res.status(200).json(postUpdated);
+        }
+    } else {
+        res.status(400).json({ error: 'Bad Request, invalid or missing input' });
+    }
 });
 
+/*
 //borrado logico de post por id
 server.delete('/posts/:id', myPost.postNotFound(sql), myPost.postDeleted(sql), async (req, res) => {
     try {

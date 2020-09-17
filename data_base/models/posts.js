@@ -44,40 +44,7 @@ posts.init({
 
 module.exports = posts;
 
-/* class Posts {
-    
-    create(sql, category_id, title, content, img_url) {
-        let resp = sql.query(
-            `INSERT INTO posts (category_id, title, content, img_url, enable)
-             VALUES (:category_id, :title, :content, :img_url, :enable)`,
-            {
-                replacements: {
-                    category_id,
-                    title,
-                    content,
-                    img_url,
-                    enable: true
-                }
-            });
-        return resp
-    };
-    update(sql, id, category_id, title, content, img_url) {
-        let resp = sql.query(
-            `UPDATE posts
-            SET category_id = :category_id, title = :title, content = :content, img_url = :img_url
-            WHERE id = :id`, {
-            replacements: {
-                id,
-                category_id,
-                title,
-                content,
-                img_url
-            },
-            type: sql.QueryTypes.UPDATE
-        });
-        return resp
-    };
-    delete(sql, id) {
+/*    delete(sql, id) {
         let resp = sql.query(
             `UPDATE posts
             SET enable = :enable
@@ -89,18 +56,7 @@ module.exports = posts;
             type: sql.QueryTypes.UPDATE
         });
         return resp
-    };
-    //middlewares
-    postNotFound(sql) {
-        let self = this
-        return function (req, res, next) {
-            self.get(sql, req.params.id)
-                .then(resp => {
-                    if (resp.length === 0) return res.status(404).json({ error: 'Not Found' });
-                    else { next() };
-                })
-        };
-    };
+    }; 
     postDeleted(sql) {
         let self = this
         return function (req, res, next) {
@@ -117,6 +73,4 @@ module.exports = posts;
             }
         }
     }
-};
-
-module.exports = { Posts } */
+*/
