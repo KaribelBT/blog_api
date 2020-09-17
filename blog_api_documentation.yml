@@ -67,10 +67,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PostResponse"
-        404:
-          $ref: "#/components/responses/NotFound"
         400:
           $ref: "#/components/responses/BadRequest"
+        404:
+          $ref: "#/components/responses/NotFound"
+        409:
+          $ref: "#/components/responses/Conflict"        
         default:
           $ref: "#/components/responses/Default"
     patch:
@@ -103,6 +105,8 @@ paths:
           $ref: "#/components/responses/BadRequest"
         404:
           $ref: "#/components/responses/NotFound"
+        409:
+          $ref: "#/components/responses/Conflict"
         default:
           $ref: "#/components/responses/Default"
     delete:
@@ -206,8 +210,8 @@ components:
     BadRequest:
       description: Bad Request, invalid or missing input
     NotFound:
-      description: Not Found
+      description: Post not found
     Conflict:
-      description: Conflict
+      description: Conflict, post deleted
     Default:
       description: Internal Server Error
