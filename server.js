@@ -14,19 +14,7 @@ const associations = require('./data_base/models/associations');
 const middlewares = require('./middlewares/posts_middlewares');
 let myMiddleware = new middlewares.Middlewares();
 
-
-// create application/json parser
 server.use(bodyParser.json());
-// parse various different custom JSON types as JSON
-server.use(bodyParser.json({ type: 'application/*+json' }));
-// parse some custom thing into a Buffer
-server.use(bodyParser.raw({ type: 'application/vnd.custom-type' }));
-// parse an HTML body into a string
-server.use(bodyParser.text({ type: 'text/html' }));
-// parse an text body into a string
-server.use(bodyParser.text({ type: 'text/plain' }));
-// create application/x-www-form-urlencoded parser
-server.use(bodyParser.urlencoded({ extended: false }));
 server.use(cors());
 
 //inicia servidor
