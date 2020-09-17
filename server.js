@@ -11,6 +11,9 @@ const posts = require('./data_base/models/posts');
 const categories = require('./data_base/models/categories');
 const associations = require('./data_base/models/associations');
 
+const middlewares = require('./middlewares/posts_middlewares');
+let myMiddleware = new middlewares.Middlewares();
+
 
 // create application/json parser
 server.use(bodyParser.json());
@@ -144,73 +147,44 @@ server.post('/posts', async (req, res) => {
 });
 
 //modifica datos de post por id
-server.patch('/posts/:id', async (req, res) => {
+server.patch('/posts/:id', myMiddleware.postNotFound(posts, categories), async (req, res) => {
     const { category_id, title, content, img_url } = req.body;
     if (!req.body) {
-        let post = await posts.findOne({
+        res.status(400).json({ error: 'Bad Request, invalid or missing input' })
+    } else {
+        let postUpdated = await posts.update({
+            category_id: category_id,
+            title: title,
+            content: content,
+            img_url: img_url
+        },
+            { where: { id: req.params.id } }
+        );
+        postUpdated = await posts.findOne({
             attributes: ['id', 'title', 'content', 'img_url', 'create_date'],
             where: {
-                id: req.params.id,
-                enable: true
+                id: req.params.id
             },
             include: [{
                 model: categories
             }]
         });
-        if (!post) {
-            res.status(404).json({ error: 'Not Found' });
-        } else {
-            let postUpdated = await posts.update({
-                category_id: category_id,
-                title: title,
-                content: content,
-                img_url: img_url
-            },
-                { where: { id: req.params.id } }
-            );
-            postUpdated = await posts.findOne({
-                attributes: ['id', 'title', 'content', 'img_url', 'create_date'],
-                where: {
-                    id: req.params.id,
-                    enable: true
-                },
-                include: [{
-                    model: categories
-                }]
-            });
-            res.status(200).json(postUpdated);
-        }
-    } else {
-        res.status(400).json({ error: 'Bad Request, invalid or missing input' });
+        console.log(postUpdated)
+        res.status(200).json(postUpdated);
     }
 });
 
 //borrado logico de post por id
-server.delete('/posts/:id', async (req, res) => {
+server.delete('/posts/:id', myMiddleware.postNotFound(posts, categories), async (req, res) => {
     try {
-        let post = await posts.findOne({
-            attributes: ['id', 'title', 'content', 'img_url', 'create_date'],
-            where: {
-                id: req.params.id,
-                enable: true
-            },
-            include: [{
-                model: categories
-            }]
-        });
-        if (!post) {
-            res.status(404).json({ error: 'Not Found' });
-        } else {
-            await posts.update({
-                enable: false
-            },
-                { where: { id: req.params.id } }
-            );
-            res.status(200).json({ message: 'Success, post disabled' });
-        }
+        await posts.update({
+            enable: false
+        },
+            { where: { id: req.params.id } }
+        );
+        res.status(200).json({ message: 'Success, post disabled' });
     }
     catch{
         res.status(400).json({ error: 'Bad Request, invalid or missing input' })
     }
 });
-

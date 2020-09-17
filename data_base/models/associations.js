@@ -1,4 +1,3 @@
-const sequelize = require('../database');
 const posts = require('../models/posts');
 const categories = require('../models/categories');
 categories.hasMany(posts, {
