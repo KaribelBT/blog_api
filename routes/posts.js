@@ -10,7 +10,7 @@ const middlewares = require('../middlewares/posts_middlewares.js');
 let myMiddleware = new middlewares.Middlewares();
 
 //lista todos los posts que no hayan sido borrados
-router.get('/posts', async (req, res) => {
+router.get('/', async (req, res) => {
     let postsListed = await posts.findAll({
         attributes: ['id', 'title', 'img_url', 'create_date'],
         where: { enable: true },
@@ -23,7 +23,7 @@ router.get('/posts', async (req, res) => {
 });
 
 //obtiene post por id
-router.get('/posts/:id', myMiddleware.postDeleted(posts), async (req, res) => {
+router.get('/:id', myMiddleware.postDeleted(posts), async (req, res) => {
     try {
         let post = await posts.findOne({
             attributes: ['id', 'title', 'content', 'img_url', 'create_date'],
@@ -45,7 +45,7 @@ router.get('/posts/:id', myMiddleware.postDeleted(posts), async (req, res) => {
 });
 
 //crea un post
-router.post('/posts', async (req, res) => {
+router.post('/', async (req, res) => {
     const { category_id, title, content, img_url } = req.body;
     try {
         let create = await posts.create({
@@ -61,7 +61,7 @@ router.post('/posts', async (req, res) => {
 });
 
 //modifica datos de post por id
-router.patch('/posts/:id', myMiddleware.postNotFound(posts, categories), myMiddleware.postDeleted(posts), async (req, res) => {
+router.patch('/:id', myMiddleware.postNotFound(posts, categories), myMiddleware.postDeleted(posts), async (req, res) => {
     const { category_id, title, content, img_url } = req.body;
     if (!req.body) {
         res.status(400).json({ error: 'Bad Request, invalid or missing input' })
@@ -88,7 +88,7 @@ router.patch('/posts/:id', myMiddleware.postNotFound(posts, categories), myMiddl
 });
 
 //borrado logico de post por id
-router.delete('/posts/:id', myMiddleware.postNotFound(posts, categories), myMiddleware.postDeleted(posts), async (req, res) => {
+router.delete('/:id', myMiddleware.postNotFound(posts, categories), myMiddleware.postDeleted(posts), async (req, res) => {
     try {
         await posts.update({
             enable: false
