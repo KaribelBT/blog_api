@@ -39,38 +39,7 @@ posts.init({
     sequelize,
     freezeTableName: true,
     timestamps: false,
-    underscored: true    
+    underscored: true
 });
 
 module.exports = posts;
-
-/*    delete(sql, id) {
-        let resp = sql.query(
-            `UPDATE posts
-            SET enable = :enable
-            WHERE id = :id`, {
-            replacements: {
-                id,
-                enable: false
-            },
-            type: sql.QueryTypes.UPDATE
-        });
-        return resp
-    }; 
-    postDeleted(sql) {
-        let self = this
-        return function (req, res, next) {
-            if (req.params.id) {
-                self.get(sql, req.params.id)
-                    .then(resp => {
-                        if (resp[0].enable == true) {
-                            next();
-                        } else {
-                            res.status(409)
-                                .json({ error: `Conflict, post deleted` })
-                        }
-                    })
-            }
-        }
-    }
-*/
