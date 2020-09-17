@@ -31,11 +31,11 @@ server.use(cors());
 
 //inicia servidor
 server.listen(port, () => {
-    console.log(`Servidor Iniciado e http://localhost:${port}`);
+    console.log(`Server started in: http://localhost:${port}`);
     sequelize.sync({ alter: true }).then(() => {
-        console.log("Nos hemos conectado a la base de datos");
+        console.log("Database connected");
     }).catch(error => {
-        console.log('Se ha producido un error', error);
+        console.log('An error has ocurred', error);
     })
 });
 
@@ -108,13 +108,12 @@ server.get('/posts', async (req, res) => {
 });
 
 //obtiene post por id
-server.get('/posts/:id', async (req, res) => {
+server.get('/posts/:id', myMiddleware.postDeleted(posts), async (req, res) => {
     try {
         let post = await posts.findOne({
             attributes: ['id', 'title', 'content', 'img_url', 'create_date'],
             where: {
-                id: req.params.id,
-                enable: true
+                id: req.params.id
             },
             include: [{
                 model: categories
@@ -123,7 +122,7 @@ server.get('/posts/:id', async (req, res) => {
         if (post) {
             res.status(200).json(post);
         } else {
-            res.status(404).json({ error: 'Not Found' });
+            res.status(404).json({ error: 'Post not found' });
         }
     } catch (error) {
         res.status(400).json({ error: 'Bad Request, invalid or missing input' })
@@ -147,7 +146,7 @@ server.post('/posts', async (req, res) => {
 });
 
 //modifica datos de post por id
-server.patch('/posts/:id', myMiddleware.postNotFound(posts, categories), async (req, res) => {
+server.patch('/posts/:id', myMiddleware.postNotFound(posts, categories), myMiddleware.postDeleted(posts), async (req, res) => {
     const { category_id, title, content, img_url } = req.body;
     if (!req.body) {
         res.status(400).json({ error: 'Bad Request, invalid or missing input' })
@@ -169,13 +168,12 @@ server.patch('/posts/:id', myMiddleware.postNotFound(posts, categories), async (
                 model: categories
             }]
         });
-        console.log(postUpdated)
         res.status(200).json(postUpdated);
     }
 });
 
 //borrado logico de post por id
-server.delete('/posts/:id', myMiddleware.postNotFound(posts, categories), async (req, res) => {
+server.delete('/posts/:id', myMiddleware.postNotFound(posts, categories), myMiddleware.postDeleted(posts), async (req, res) => {
     try {
         await posts.update({
             enable: false
