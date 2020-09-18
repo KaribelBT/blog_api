@@ -27,22 +27,10 @@ app.listen(port, () => {
 categories.findAll().then(existingCategories => {
     try {
         if (existingCategories.length === 0) {
-            CSVtoJSON().fromFile('./database/bulk_insert/categories.csv').then(categories => {
-                categories.map(category => {
-                    let query = sequelize.query(
-                        `INSERT INTO categories (id, name)
-                        VALUES (:id, :name)`,
-                        {
-                            replacements: {
-                                id: category.id,
-                                name: category.name
-                            }
-                        });
-                    return query.then(resp => {
-                        console.log('categories inserted')
-                    })
-                })
-            });
+            CSVtoJSON().fromFile('./database/bulk_insert/categories.csv').then(arrcat => {
+                categories.bulkCreate(arrcat);
+                console.log('categories inserted');
+            })
         }
     } catch (error) {
         console.log(error)
@@ -51,27 +39,10 @@ categories.findAll().then(existingCategories => {
 posts.findAll().then(existingPosts => {
     try {
         if (existingPosts.length === 0) {
-            CSVtoJSON().fromFile('./database/bulk_insert/posts.csv').then(posts => {
-                posts.map(post => {
-                    let query = sequelize.query(
-                        `INSERT INTO posts (id, category_id, title, content, img_url, create_date, enable)
-                        VALUES (:id, :category_id, :title, :content, :img_url, :create_date, :enable)`,
-                        {
-                            replacements: {
-                                id: post.id,
-                                category_id: post.category_id,
-                                title: post.title,
-                                content: post.content,
-                                img_url: post.img_url,
-                                create_date: post.create_date,
-                                enable: post.enable
-                            }
-                        });
-                    return query.then(resp => {
-                        console.log('posts inserted')
-                    })
-                })
-            });
+            CSVtoJSON().fromFile('./database/bulk_insert/posts.csv').then(arrposts => {
+                posts.bulkCreate(arrposts);
+                console.log('posts inserted')
+            })
         }
     } catch (error) {
         console.log(error)
