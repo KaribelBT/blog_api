@@ -27,7 +27,7 @@ app.listen(port, () => {
 categories.findAll().then(existingCategories => {
     try {
         if (existingCategories.length === 0) {
-            CSVtoJSON().fromFile('./database/bulk_insert/categories.csv').then(arrcat => {
+            CSVtoJSON().fromFile('./database/bulkinsert/categories.csv').then(arrcat => {
                 categories.bulkCreate(arrcat);
                 console.log('categories inserted');
             })
@@ -39,7 +39,7 @@ categories.findAll().then(existingCategories => {
 posts.findAll().then(existingPosts => {
     try {
         if (existingPosts.length === 0) {
-            CSVtoJSON().fromFile('./database/bulk_insert/posts.csv').then(arrposts => {
+            CSVtoJSON().fromFile('./database/bulkinsert/posts.csv').then(arrposts => {
                 posts.bulkCreate(arrposts);
                 console.log('posts inserted')
             })
