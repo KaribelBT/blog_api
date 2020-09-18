@@ -27,7 +27,7 @@ app.listen(port, () => {
 categories.findAll().then(existingCategories => {
     try {
         if (existingCategories.length === 0) {
-            CSVtoJSON().fromFile('./data_base/bulk_insert/categories.csv').then(categories => {
+            CSVtoJSON().fromFile('./database/bulk_insert/categories.csv').then(categories => {
                 categories.map(category => {
                     let query = sequelize.query(
                         `INSERT INTO categories (id, name)
@@ -51,7 +51,7 @@ categories.findAll().then(existingCategories => {
 posts.findAll().then(existingPosts => {
     try {
         if (existingPosts.length === 0) {
-            CSVtoJSON().fromFile('./data_base/bulk_insert/posts.csv').then(posts => {
+            CSVtoJSON().fromFile('./database/bulk_insert/posts.csv').then(posts => {
                 posts.map(post => {
                     let query = sequelize.query(
                         `INSERT INTO posts (id, category_id, title, content, img_url, create_date, enable)

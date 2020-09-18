@@ -63,9 +63,7 @@ router.post('/', async (req, res) => {
 //modifica datos de post por id
 router.patch('/:id', myMiddleware.postNotFound(posts, categories), myMiddleware.postDeleted(posts), async (req, res) => {
     const { category_id, title, content, img_url } = req.body;
-    if (!req.body) {
-        res.status(400).json({ error: 'Bad Request, invalid or missing input' })
-    } else {
+    if (category_id && title && content && img_url) {
         let postUpdated = await posts.update({
             category_id: category_id,
             title: title,
@@ -83,7 +81,9 @@ router.patch('/:id', myMiddleware.postNotFound(posts, categories), myMiddleware.
                 model: categories
             }]
         });
-        res.status(200).json(postUpdated);
+        res.status(200).json(postUpdated);     
+    } else {
+        res.status(400).json({ error: 'Bad Request, invalid or missing input' });        
     }
 });
 
