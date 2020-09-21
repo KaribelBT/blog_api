@@ -11,6 +11,8 @@ const categories = require('./database/models/categories.js');
 const associations = require('./database/models/associations.js');
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 app.use('/posts', require('./routes/posts.js'))
 
 //inicia servidor
