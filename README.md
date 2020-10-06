@@ -5,12 +5,8 @@ Challenge Semana 1 Backend Alkemylabs
 ## Tecnologías utilizadas
 
 - Node.js
-- Libreria Nodemon
-- Libreria Express
-- Libreria Sequelize
-- Libreria Cors
-- Libreria BodyParser
-- MySQL
+- Express
+- Sequelize ORM
 - Postman 
 
 ### Paso 1: Clonar Proyecto:
@@ -34,14 +30,23 @@ En el directorio donde se clonó el proyecto, ejecutar desde la terminal:
 - Si no encuentra XAMPP Panel de Control, por terminal ejecutar:
 `sudo /opt/lampp/lampp start` 
 - Ingresar desde el navegador a la ruta `http://localhost/phpmyadmin/index.php`
-- Abrir el archivo `db_queries.sql` ubicado dentro de la carpeta `data_base` del proyecto clonado
-- Crear la base de datos, se puede importar el archivo o se puede copiar su contenido y pegar en la solapa de SQL
+- Crear la base de datos haciendo click en `Nueva` con el nombre `blog_api`
 
-### Paso 4: Iniciar el servidor
+### Paso 4: Configurar variables de entorno
+- Cambia el nombre del archivo `.env.example` a `.env`
 
-Desde la terminal ubicandose en la carpeta `server`, ejecutar:
+### Paso 5: Iniciar Servidor y crear tablas e inserts de ejemplo en la base de datos
+Desde la terminal ubicandose en la carpeta del proyecto clonado, ejecutar:
 
-`node server.js`
+`npm start`
+
+Luego ejecutar:
+
+`npx sequelize-cli db:migrate`
+
+Por último ejecutar:
+
+`npx sequelize-cli db:seed:all`
 
 ### Colección de Postman
 
