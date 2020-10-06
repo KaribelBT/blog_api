@@ -7,9 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true
     },
-    name: DataTypes.STRING,
-    createdAt:DataTypes.DATE,
-    updatedAt:DataTypes.DATE
+    name: DataTypes.STRING
   });
 
   categories.associate = models => {

@@ -11,9 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     content: DataTypes.TEXT,
     img_url: DataTypes.STRING,
-    enable: DataTypes.BOOLEAN,
-    createdAt:DataTypes.DATE,
-    updatedAt:DataTypes.DATE
+    enable: DataTypes.BOOLEAN
   });
   posts.associate = models => {
     posts.belongsTo(models.categories, {
