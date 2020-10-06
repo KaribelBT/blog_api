@@ -4,7 +4,7 @@
   "description": "rest api ejercicio practica alkemy",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon ./bin/www"
   },
   "repository": {
     "type": "git",
@@ -17,11 +17,18 @@
   },
   "homepage": "https://github.com/KaribelBT/blog_api#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
     "csvtojson": "^2.0.10",
+    "debug": "^4.2.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
+    "http-errors": "^1.8.0",
+    "morgan": "^1.10.0",
     "mysql2": "^2.1.0",
     "nodemon": "^2.0.4",
+    "path": "^0.12.7",
     "sequelize": "^6.3.5"
   }
 }

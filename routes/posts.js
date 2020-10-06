@@ -1,6 +1,6 @@
-const express = require('express');
+/* const express = require('express');
 const router = express.Router();
-const middlewares = require('../middlewares/posts_middlewares.js');
+//const middlewares = require('../middlewares/posts_middlewares.js');
 const postController = require('../controllers/posts.js');
 
 //lista todos los posts
@@ -18,4 +18,4 @@ router.patch('/:id', middlewares.postNotFound, middlewares.postDeleted, postCont
 //borrado logico de post por id
 router.delete('/:id', middlewares.postNotFound, middlewares.postDeleted, postController.deletePost);
 
-module.exports = router;
+module.exports = router; */

@@ -1,4 +1,4 @@
-const sequelize = require('../database/database.js');
+/* const sequelize = require('../database/database.js');
 const posts = require('../database/models/posts.js');
 const categories = require('../database/models/categories.js');
 const associations = require('../database/models/associations.js');
@@ -98,4 +98,4 @@ exports.deletePost = async (req, res) => {
     catch{
         res.status(400).json({ error: 'Bad Request, invalid or missing input' })
     }
-};
+}; */
