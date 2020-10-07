@@ -1,8 +1,12 @@
-/* const express = require('express');
+const express = require('express');
 const router = express.Router();
-//const middlewares = require('../middlewares/posts_middlewares.js');
-const postController = require('../controllers/posts.js');
+const postsControllers = require('../controllers/postsControllers');
 
+//lista todos los posts
+router.get('/', postsControllers.getAll);
+
+module.exports = router;
+/*
 //lista todos los posts
 router.get('/', postController.listPosts);
 

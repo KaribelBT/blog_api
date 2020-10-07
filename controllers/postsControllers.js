@@ -1,17 +1,22 @@
-/* const sequelize = require('../database/database.js');
-const posts = require('../database/models/posts.js');
-const categories = require('../database/models/categories.js');
-const associations = require('../database/models/associations.js');
+const postsServices = require('../services/postsServices');
+
+const getAll = async (req, res) => {
+    try {
+      const posts = await postsServices.listPosts();
+      return res.status(200).json({ posts });
+    } catch (error) {
+      return res.status(500).send({ message: 'Server error' });
+    }
+  };
+
+module.exports = {
+    getAll
+}
+
+/* 
 
 exports.listPosts = async (req, res) => {
-    let postsListed = await posts.findAll({
-        attributes: ['id', 'title', 'img_url', 'create_date'],
-        where: { enable: true },
-        order: [['create_date', 'DESC']],
-        include: [{
-            model: categories
-        }]
-    })
+    
     res.json(postsListed);
 };
 
