@@ -2,23 +2,32 @@ const postsServices = require('../services/postsServices');
 
 const getAll = async (req, res) => {
     try {
-      const posts = await postsServices.listPosts();
-      return res.status(200).json({ posts });
+        const posts = await postsServices.list();
+        return res.status(200).json({ posts });
     } catch (error) {
-      return res.status(500).send({ message: 'Server error' });
+        return res.status(500).send({ message: 'Server error' });
     }
-  };
+};
+
+const getOne = async (req, res) => {
+    try {
+        const post = await postsServices.getById(req.params.id);
+        if (!post) {
+            res.status(404).json({ error: 'Post not found' });            
+        } else {
+            res.status(200).json(post);  
+        }
+    } catch (error) {
+        return res.status(500).send({ message: 'Server error' });    
+    }
+} 
 
 module.exports = {
-    getAll
+    getAll,
+    getOne
 }
 
-/* 
-
-exports.listPosts = async (req, res) => {
-    
-    res.json(postsListed);
-};
+/*
 
 exports.createPost = async (req, res) => {
     const { category_id, title, content, img_url } = req.body;
@@ -66,9 +75,9 @@ exports.getPostById = async (req, res) => {
 };
 
 exports.updatePost = async (req, res) => {
-    const { category_id, title, content, img_url } = req.body;    
+    const { category_id, title, content, img_url } = req.body;
     if (!req.body) {
-        res.status(400).json({ error: 'Bad Request, invalid or missing input' });          
+        res.status(400).json({ error: 'Bad Request, invalid or missing input' });
     } else {
         let postUpdated = await posts.update({
             category_id: category_id,
@@ -87,7 +96,7 @@ exports.updatePost = async (req, res) => {
                 model: categories
             }]
         });
-        res.status(200).json(postUpdated);           
+        res.status(200).json(postUpdated);
     }
 };
 

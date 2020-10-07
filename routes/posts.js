@@ -4,6 +4,7 @@ const postsControllers = require('../controllers/postsControllers');
 
 //lista todos los posts
 router.get('/', postsControllers.getAll);
+router.get('/:id', postsControllers.getOne);
 
 module.exports = router;
 /*
