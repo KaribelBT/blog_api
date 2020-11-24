@@ -52,7 +52,7 @@ Por último ejecutar:
 ### Colección de Postman
 
 - Si no tiene instalado Postman, por favor dirigirse a [este link](https://www.getpostman.com/collections/c7e8c17f8be9132a735a)
-- Abrir Postman, click en `File`, click en `Import`, click en `Import From Link` y pegar lo siguiente `https://www.getpostman.com/collections/c7e8c17f8be9132a735a` 
+- Abrir Postman, click en `File`, click en `Import`, click en `Import From Link` y pegar lo siguiente `https://www.getpostman.com/collections/4372666931c4f3c389fb` 
 - Hacer las consultas deseadas
 
 ## Documentación de la API
