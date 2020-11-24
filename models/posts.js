@@ -1,25 +1,36 @@
-'use strict';
-
+'use strict'
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  const posts = sequelize.define('posts', {
-    id:{
-      type:DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
+  class Posts extends Model {
+    static associate(models) {
+      Posts.belongsTo(models.Categories, {
+        foreignKey: {
+          name: "categoryId",
+          allowNull: false,
+        },
+      });
+    }
+  }
+  Posts.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      categoryId: DataTypes.INTEGER,
+      title: DataTypes.STRING,
+      content: DataTypes.TEXT,
+      img_url: DataTypes.STRING,
+      createdAt: DataTypes.DATE,
+      updatedAt: DataTypes.DATE,
+      deletedAt: DataTypes.DATE
     },
-    categoryId: DataTypes.INTEGER,
-    title: DataTypes.STRING,
-    content: DataTypes.TEXT,
-    img_url: DataTypes.STRING,
-    enable: DataTypes.BOOLEAN
-  });
-  posts.associate = models => {
-    posts.belongsTo(models.categories, {
-      foreignKey: {
-        name: 'categoryId',
-        allowNull: false
-      }
-    })
-  };
-  return posts;
+    {
+      sequelize,
+      paranoid: true,
+      modelName: "Posts",
+    }
+  );
+  return Posts;
 };

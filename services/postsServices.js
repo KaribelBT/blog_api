@@ -21,14 +21,24 @@ const getById = async (id) => {
     try {
         return await posts.findOne({
             attributes: ['id', 'title', 'content', 'img_url', 'createdAt'],
-            where: {
-                id: id
-            },
+            where: { id: id },
             include: [{
                 model: categories,
                 attributes: ['id', 'name']
             }]
-        });       
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const deleteById = async (id) => {
+    try {
+        return await posts.update({
+            enable: 0
+        },
+            { where: { id: id } }
+        );
     } catch (error) {
         console.log(error);
     }
@@ -36,5 +46,6 @@ const getById = async (id) => {
 
 module.exports = {
     list,
-    getById
+    getById,
+    deleteById
 }

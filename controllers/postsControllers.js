@@ -13,18 +13,28 @@ const getOne = async (req, res) => {
     try {
         const post = await postsServices.getById(req.params.id);
         if (!post) {
-            res.status(404).json({ error: 'Post not found' });            
+            res.status(404).json({ error: 'Post not found' });
         } else {
-            res.status(200).json(post);  
+            res.status(200).json(post);
         }
     } catch (error) {
-        return res.status(500).send({ message: 'Server error' });    
+        res.status(400).json({ error: 'Bad Request, invalid or missing input' })
     }
-} 
+}
+
+const deleteOne = async (req, res) => {
+    try {
+        await postsServices.deleteById(req.params.id);
+        res.status(200).json({ message: 'Success, post disabled' });
+    } catch (error) {
+        res.status(400).json({ error: 'Bad Request, invalid or missing input' })
+    }
+}
 
 module.exports = {
     getAll,
-    getOne
+    getOne,
+    deleteOne
 }
 
 /*
@@ -100,16 +110,4 @@ exports.updatePost = async (req, res) => {
     }
 };
 
-exports.deletePost = async (req, res) => {
-    try {
-        await posts.update({
-            enable: false
-        },
-            { where: { id: req.params.id } }
-        );
-        res.status(200).json({ message: 'Success, post disabled' });
-    }
-    catch{
-        res.status(400).json({ error: 'Bad Request, invalid or missing input' })
-    }
-}; */
+*/
