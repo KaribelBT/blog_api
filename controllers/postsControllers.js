@@ -25,7 +25,7 @@ const getOne = async (req, res) => {
 const deleteOne = async (req, res) => {
     try {
         await postsServices.deleteById(req.params.id);
-        res.status(200).json({ message: 'Success, post disabled' });
+        res.status(200).json({ message: 'Success, post deleted' });
     } catch (error) {
         res.status(400).json({ error: 'Bad Request, invalid or missing input' })
     }

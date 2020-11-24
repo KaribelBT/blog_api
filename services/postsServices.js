@@ -1,14 +1,13 @@
 const db = require('../models');
-const { posts, categories } = db;
+const { Posts, Categories } = db;
 
 const list = async () => {
     try {
-        return await posts.findAll({
+        return await Posts.findAll({
             attributes: ['id', 'title', 'img_url', 'createdAt'],
-            where: { enable: true },
             order: [['createdAt', 'DESC']],
             include: [{
-                model: categories,
+                model: Categories,
                 attributes: ['id', 'name']
             }]
         })
@@ -19,11 +18,11 @@ const list = async () => {
 
 const getById = async (id) => {
     try {
-        return await posts.findOne({
+        return await Posts.findOne({
             attributes: ['id', 'title', 'content', 'img_url', 'createdAt'],
             where: { id: id },
             include: [{
-                model: categories,
+                model: Categories,
                 attributes: ['id', 'name']
             }]
         });
@@ -34,14 +33,20 @@ const getById = async (id) => {
 
 const deleteById = async (id) => {
     try {
-        return await posts.update({
-            enable: 0
-        },
-            { where: { id: id } }
-        );
-    } catch (error) {
+        const post = await db.Posts.findByPk(id);
+        if (!post) {
+          deletedEntry = null;
+        } else {
+          await db.Posts.destroy({
+            where: {
+              id,
+            },
+          });
+        }
+        return post;
+      } catch (error) {
         console.log(error);
-    }
+      }
 }
 
 module.exports = {
