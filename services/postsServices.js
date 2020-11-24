@@ -1,5 +1,6 @@
 const db = require('../models');
 const { Posts, Categories } = db;
+const postsJoiValidation = require("../joivalidation/posts");
 
 const list = async () => {
     try {
@@ -31,6 +32,15 @@ const getById = async (id) => {
     }
 }
 
+const create = async (data) => {
+    try {
+        await postsJoiValidation(data); 
+        return await Posts.create(data);        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const deleteById = async (id) => {
     try {
         const post = await db.Posts.findByPk(id);
@@ -52,5 +62,6 @@ const deleteById = async (id) => {
 module.exports = {
     list,
     getById,
+    create,
     deleteById
 }
