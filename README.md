@@ -7,6 +7,7 @@ Challenge Semana 1 Backend Alkemylabs
 - Node.js
 - Express
 - Sequelize ORM
+- Joi Validation
 - Postman 
 
 ### Paso 1: Clonar Proyecto:

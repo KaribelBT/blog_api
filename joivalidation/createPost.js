@@ -10,7 +10,6 @@ const schema = Joi.object({
 
 module.exports = async (data) => {
   if (_.isEmpty(data)) {
-      console.log('entre')
     throw new Error("Bad Request, missing input");
   }
   try {

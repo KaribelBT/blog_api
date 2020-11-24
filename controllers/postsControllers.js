@@ -35,6 +35,20 @@ const create = async (req, res) => {
   }
 };
 
+const update = async (req, res) => {
+  try {
+    let post = await postsServices.update(req.params.id, req.body);
+    if (!post) {
+      res.status(400).json({ error: "Bad Request, invalid or missing input" });
+    } else {
+      let postUpdated = await postsServices.getById(req.params.id)
+      res.status(200).json(postUpdated);
+    }
+  } catch (error) {
+    return res.status(500).send({ message: "Server error" });
+  }
+};
+
 const deleteOne = async (req, res) => {
   try {
     await postsServices.deleteById(req.params.id);
@@ -48,33 +62,6 @@ module.exports = {
   getAll,
   getOne,
   create,
-  deleteOne,
+  update,
+  deleteOne
 };
-
-/*
-exports.updatePost = async (req, res) => {
-    const { category_id, title, content, img_url } = req.body;
-    if (!req.body) {
-        res.status(400).json({ error: 'Bad Request, invalid or missing input' });
-    } else {
-        let postUpdated = await posts.update({
-            category_id: category_id,
-            title: title,
-            content: content,
-            img_url: img_url
-        },
-            { where: { id: req.params.id } }
-        );
-        postUpdated = await posts.findOne({
-            attributes: ['id', 'title', 'content', 'img_url', 'create_date'],
-            where: {
-                id: req.params.id
-            },
-            include: [{
-                model: categories
-            }]
-        });
-        res.status(200).json(postUpdated);
-    }
-};
-*/
